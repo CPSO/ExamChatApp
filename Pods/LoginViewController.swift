@@ -34,6 +34,11 @@ class LoginViewController: UIViewController {
         }
 }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        print("removing state listener")
+        Auth.auth().removeStateDidChangeListener(handle!)
+    }
+    
     
     @IBAction func btnSignInPressed(_ sender: Any) {
         guard
@@ -55,18 +60,24 @@ class LoginViewController: UIViewController {
                 
                 self.present(alert, animated: true, completion: nil)
             }
+            if let user = user {
+                self.performSegue(withIdentifier: "loginSegue", sender: nil)
+
+            }
     }
     }
     
     
     @IBAction func btnCreateUserPressed(_ sender: Any) {
         Auth.auth().createUser(withEmail: self.textEmail.text!, password: self.textPassword.text!) { (user, error) in
-            if user != nil {
-                print("created a user")
-            }
-            if error != nil {
-                print(error.debugDescription)
-                print(":(")
+            if let error = error, user == nil {
+                let alert = UIAlertController(title: "ERROR",
+                                              message: error.localizedDescription,
+                                              preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }

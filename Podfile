@@ -11,4 +11,5 @@ target 'ExamChatApp' do
     pod 'Firebase/Firestore'
     pod 'Firebase/Storage'
     pod 'MessageKit'
+    pod 'FirebaseUI/Google'
 end
