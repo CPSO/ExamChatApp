@@ -54,8 +54,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Sign in"/>
                                 <connections>
-                                    <action selector="btnSubmit:" destination="cVz-Nj-eGI" eventType="touchUpInside" id="MgF-fI-BcT"/>
-                                    <action selector="btnSubmitCalled:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mvr-el-uQ0"/>
+                                    <action selector="btnSignInPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6ew-xS-5Jz"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8zb-aa-ehI">
@@ -67,7 +66,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Create User"/>
                                 <connections>
-                                    <action selector="btnCreatePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oe0-LW-5Bi"/>
+                                    <action selector="btnCreateUserPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TUM-nr-Pg1"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -91,44 +90,38 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="btnCreateUser" destination="8zb-aa-ehI" id="ejV-Ij-4GY"/>
-                        <outlet property="btnSubmit" destination="ekJ-WN-hpK" id="T98-hB-11C"/>
+                        <outlet property="btnCreateUser" destination="8zb-aa-ehI" id="5PG-Jh-6H6"/>
+                        <outlet property="btnSignIn" destination="ekJ-WN-hpK" id="3eK-75-k0m"/>
                         <outlet property="textEmail" destination="N19-Ra-6oS" id="Kfy-wl-OiN"/>
                         <outlet property="textPassword" destination="NRa-QF-0oo" id="ZeW-8b-hke"/>
+                        <segue destination="rp0-he-ksI" kind="show" identifier="loginSegue" id="QPr-1o-G98"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <exit id="cVz-Nj-eGI" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="132" y="133.5832083958021"/>
+            <point key="canvasLocation" x="593" y="170"/>
         </scene>
-        <!--Channels View Controller-->
-        <scene sceneID="ryi-1v-WX4">
+        <!--View Controller-->
+        <scene sceneID="MRv-ve-0nV">
             <objects>
-                <tableViewController id="bET-ro-mnn" customClass="ChannelsViewController" customModule="ExamChatApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="di4-d5-s0i">
+                <viewController id="rp0-he-ksI" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Jyv-VG-LtC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wiC-zs-GCc">
+                                <rect key="frame" x="67" y="187" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="jpP-0F-2hw">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jpP-0F-2hw" id="Vxj-wA-V2I">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="bET-ro-mnn" id="Cbv-Tn-URo"/>
-                            <outlet property="delegate" destination="bET-ro-mnn" id="oMp-ma-LSD"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Wm0-Is-xeN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <viewLayoutGuide key="safeArea" id="aGb-Gg-Teg"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Cdr-t7-kfT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="816" y="143"/>
+            <point key="canvasLocation" x="1837" y="171"/>
         </scene>
     </scenes>
 </document>

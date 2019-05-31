@@ -15,76 +15,27 @@ class LoginViewController: UIViewController {
 
     @IBOutlet weak var textEmail: UITextField!
     @IBOutlet weak var textPassword: UITextField!
-    @IBOutlet weak var btnSubmit: UIButton!
+    @IBOutlet weak var btnSignIn: UIButton!
     @IBOutlet weak var btnCreateUser: UIButton!
+    var handle: AuthStateDidChangeListenerHandle?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 1
-        Auth.auth().addStateDidChangeListener() { auth, user in
-            // 2
-            if user != nil {
-                // 3
-               // self.performSegue(withIdentifier: self.loginToList, sender: nil)
-                self.textEmail.text = nil
-                self.textPassword.text = nil
+        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            print("state did chanche")
+            if let user = user {
+                let uid = user.uid
+                let uemail = user.email
+                print("User Information" + uid + " " + uemail!)
+                self.performSegue(withIdentifier: "loginSegue", sender: nil)
             }
         }
-
-        // Do any additional setup after loading the view.
-    }
-    
-
-    @IBAction func btnSubmitCalled(_ sender: Any) {
-    
-        //login(withEmail: textEmail.text!, password: textPassword.text!)
-        newLogin()
-    }
-    
-    @IBAction func btnCreatePressed(_ sender: Any) {
-        // 1
-        let emailField = textEmail.text
-        let passwordField = textPassword.text
-        // 2
-        Auth.auth().createUser(withEmail: emailField!, password: passwordField!) { user, error in
-            if error == nil {
-                // 3
-                Auth.auth().signIn(withEmail: self.textEmail.text!,
-                                   password: self.textPassword.text!)
-            }
-            if error != nil {
-                print(error.debugDescription)
-                print(error)
-            }
-        }
-
-        
-    }
+}
     
     
-    func createUser(email: String, password: String, _ callback: ((Error?) -> ())? = nil){
-        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-            if let e = error{
-                callback?(e)
-                return
-            }
-            callback?(nil)
-        }
-    }
-    
-    func login(withEmail email: String, password: String, _ callback: ((Error?) -> ())? = nil){
-        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-            if let e = error{
-                callback?(e)
-                return
-            }
-            callback?(nil)
-
-        }
-    }
-    
-    func newLogin() {
+    @IBAction func btnSignInPressed(_ sender: Any) {
         guard
             let email = textEmail.text,
             let password = textPassword.text,
@@ -94,7 +45,6 @@ class LoginViewController: UIViewController {
                 print("No Input detected")
                 return
         }
-        
         Auth.auth().signIn(withEmail: email, password: password) { user, error in
             if let error = error, user == nil {
                 let alert = UIAlertController(title: "Sign In Failed",
@@ -105,8 +55,23 @@ class LoginViewController: UIViewController {
                 
                 self.present(alert, animated: true, completion: nil)
             }
-        }
-
     }
-
+    }
+    
+    
+    @IBAction func btnCreateUserPressed(_ sender: Any) {
+        Auth.auth().createUser(withEmail: self.textEmail.text!, password: self.textPassword.text!) { (user, error) in
+            if user != nil {
+                print("created a user")
+            }
+            if error != nil {
+                print(error.debugDescription)
+                print(":(")
+            }
+        }
+    }
+    
+    
+    
+    
 }

@@ -14,8 +14,6 @@
 		28888774228AED04007E9B9D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28888772228AED04007E9B9D /* LaunchScreen.storyboard */; };
 		2888877E228AF107007E9B9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2888877D228AF107007E9B9D /* GoogleService-Info.plist */; };
 		28888786228AFE4E007E9B9D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28888785228AFE4E007E9B9D /* LoginViewController.swift */; };
-		28CA4AD22298157F00CD6D93 /* ChannelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CA4AD12298157F00CD6D93 /* ChannelsViewController.swift */; };
-		28CA4AD62298230300CD6D93 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CA4AD52298230300CD6D93 /* Channel.swift */; };
 		D357D729D5E8722A787C067D /* Pods_ExamChatApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0917359D11A866E01D557298 /* Pods_ExamChatApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -30,8 +28,6 @@
 		28888775228AED04007E9B9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2888877D228AF107007E9B9D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28888785228AFE4E007E9B9D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = Pods/LoginViewController.swift; sourceTree = SOURCE_ROOT; };
-		28CA4AD12298157F00CD6D93 /* ChannelsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelsViewController.swift; sourceTree = "<group>"; };
-		28CA4AD52298230300CD6D93 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		7D652DA2BD3A374451A5E2FC /* Pods-ExamChatApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExamChatApp.debug.xcconfig"; path = "Target Support Files/Pods-ExamChatApp/Pods-ExamChatApp.debug.xcconfig"; sourceTree = "<group>"; };
 		CFFD156BB320EE3DD90648A7 /* Pods-ExamChatApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExamChatApp.release.xcconfig"; path = "Target Support Files/Pods-ExamChatApp/Pods-ExamChatApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -77,8 +73,6 @@
 				28888775228AED04007E9B9D /* Info.plist */,
 				2888877D228AF107007E9B9D /* GoogleService-Info.plist */,
 				28888785228AFE4E007E9B9D /* LoginViewController.swift */,
-				28CA4AD12298157F00CD6D93 /* ChannelsViewController.swift */,
-				28CA4AD52298230300CD6D93 /* Channel.swift */,
 			);
 			path = ExamChatApp;
 			sourceTree = "<group>";
@@ -240,9 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28888786228AFE4E007E9B9D /* LoginViewController.swift in Sources */,
-				28CA4AD62298230300CD6D93 /* Channel.swift in Sources */,
 				2888876C228AED02007E9B9D /* ViewController.swift in Sources */,
-				28CA4AD22298157F00CD6D93 /* ChannelsViewController.swift in Sources */,
 				2888876A228AED02007E9B9D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
