@@ -15,8 +15,8 @@ import FirebaseUI
 class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let db = Firestore.firestore()
     let user = Auth.auth().currentUser
+    var notebook = [Notebook]()
     @IBOutlet weak var tableView: UITableView!
-    
     @IBOutlet weak var btnAddBook: UIBarButtonItem!
     
     
@@ -28,27 +28,41 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        loadData()
+        getData()
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getData()
+        checkForUpdates()
+    }
+    
+    func checkForUpdates() {
+        db.collection("notebook").addSnapshotListener { (querySnapshot, error) in
+            guard error == nil else {
+                print("Error adding snapshot listener \(error!.localizedDescription)")
+                return
+            }
+            self.getData()
+        }
     }
     
     
     
-    func getDate(){
-        let collection = Firestore.firestore().collection(user!.uid)
-        db.collection("groceryItem").getDocuments { (querySnapshot, error) in
+    func getData(){
+        //let notebookRef = db.collection("notebook")
+        //let query = notebookRef.whereField("owner", isEqualTo: "<#T##Any#>")
+        db.collection("notebook").whereField("owner", isEqualTo: user?.email!).getDocuments { (querySnapshot, error) in
             guard error == nil else {
                 print("ERROR: reading documents \(error!.localizedDescription)")
                 return
             }
-            self.groceryItem = []
+            self.notebook = []
             for document in querySnapshot!.documents {
-                let groceryData = GroceryItem(dictionary: document.data())
-                groceryData.groceryItemID = document.documentID
-                self.groceryItem.append(groceryData)
-            }
-            if self.sortSegmentedControl.selectedSegmentIndex != 0 {
-                self.sortBasedOnSegmentPressed()
+                let notebookData = Notebook(dictionary: document.data())
+                notebookData.name = document.get("name") as! String
+                self.notebook.append(notebookData)
             }
             self.tableView.reloadData()
         }
@@ -58,31 +72,13 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return notebook.count
 
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath)
-        
-        //let stuff = fR.notes[indexPath.row]
-        
-        cell.textLabel?.text = "stuff.text"
-        
-        
-        
-        //        for note in fR.notes{
-        //            cell.textLabel?.text = note.text
-        //
-        //        }
-        // var tableContent =
-        
-        //        cell.textLabel?.text = String(global.notes[indexPath.row].prefix(50))
-        // Configure the cell...
-        
-        //cell.textLabel?.text = fR.notesCollection.document().
-        
+        cell.textLabel?.text = notebook[indexPath.row].name
         return cell
-        
     }
     
     
