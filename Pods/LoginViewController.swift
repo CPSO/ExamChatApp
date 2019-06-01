@@ -12,17 +12,21 @@ import FirebaseAuth
 import FirebaseStorage
 
 class LoginViewController: UIViewController {
-
+    
     @IBOutlet weak var textEmail: UITextField!
     @IBOutlet weak var textPassword: UITextField!
     @IBOutlet weak var btnSignIn: UIButton!
     @IBOutlet weak var btnCreateUser: UIButton!
     var handle: AuthStateDidChangeListenerHandle?
+    //let db = Firestore.firestore()
+    lazy var db = Firestore.firestore()
+    lazy var userID = Auth.auth().currentUser!.uid
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
         handle = Auth.auth().addStateDidChangeListener { (auth, user) in
             print("state did chanche")
             if let user = user {
@@ -79,7 +83,29 @@ class LoginViewController: UIViewController {
                 
                 self.present(alert, animated: true, completion: nil)
             }
+            if error == nil {
+                self.createUser()
+            }
         }
+    }
+    
+    func createUser() {
+        let userAuth = Auth.auth().currentUser!
+        guard let name = textEmail.text else {return}
+        guard let password = textPassword.text else {return}
+        
+        let user = UserModal(id: userAuth.uid, username: name, password: password)
+        let userRef = self.db.collection("users")
+        
+        userRef.document(String(user.id)).setData(user.dictionary){ err in
+            if err != nil {
+                print("issue here")
+            }else{
+                print("Document was saved")
+            }
+        }
+        
+        
     }
     
     

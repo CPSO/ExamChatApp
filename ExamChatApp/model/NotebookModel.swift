@@ -7,3 +7,14 @@
 //
 
 import Foundation
+
+class UserModel{
+
+    var uMail:String
+    var uID:String
+
+    init(uMail:String,uID:String) {
+        self.uMail = uMail
+        self.uID = uID
+    }
+}
