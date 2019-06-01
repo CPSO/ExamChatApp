@@ -64,6 +64,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             for document in querySnapshot!.documents {
                 let notebookData = Notebook(dictionary: document.data())
                 notebookData.name = document.get("name") as! String
+                notebookData.id = document.documentID
                 self.notebook.append(notebookData)
             }
             self.tableView.reloadData()
@@ -81,6 +82,13 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath)
         cell.textLabel?.text = notebook[indexPath.row].name
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("selected: " + notebook[indexPath.row].id)
+        groceryListId = notebook[indexPath.row].id
+        self.tabBarController?.selectedIndex = 1
+        
     }
     
     
@@ -102,9 +110,8 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     func addBook(bookname:String){
-        let notebook = Notebook(name: bookname, owner: (user?.email)!)
+        let notebook = Notebook(name: bookname, owner: (user?.email)!, id: "")
         let notebookRef = self.db.collection("notebook")
-        
         notebookRef.document().setData(notebook.dictionary){ err in
             if err != nil {
                 print("issue here")
@@ -115,17 +122,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
     }
     
-    
-
-    /*
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 }
 
 
