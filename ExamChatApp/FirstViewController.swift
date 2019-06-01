@@ -34,6 +34,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("calling viewWillApper")
         getData()
         checkForUpdates()
     }
@@ -45,6 +46,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 return
             }
             self.getData()
+            print("setting new data")
         }
     }
     
