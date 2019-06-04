@@ -29,22 +29,24 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.dataSource = self
         tableView.delegate = self
         self.tableView.tableFooterView = UIView(frame: .zero)
-        getData()
-        getSharedList()
-        checkForRepeats(array: notebook)
         // Do any additional setup after loading the view.
     }
+    
+    
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("calling viewWillApper")
+        getData()
         checkForUpdates()
-        getSharedList()
         checkForRepeats(array: notebook)
 
     }
     
     func checkForUpdates() {
+        print("CheckForUpdates Called")
         db.collection("notebook").addSnapshotListener { (querySnapshot, error) in
             guard error == nil else {
                 print("Error adding snapshot listener \(error!.localizedDescription)")
@@ -53,6 +55,14 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.getData()
             print("setting new data")
         }
+//        db.collection("users").document(user!.uid).collection("sharedList").addSnapshotListener { (querySnapshot, error) in
+//            guard error == nil else {
+//                print("Error adding snapshot listener \(error!.localizedDescription)")
+//                return
+//            }
+//            self.getSharedList()
+//            print("setting new data")
+//        }
     }
   
     
@@ -75,6 +85,8 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     notebookData.name = document.get("name") as! String
                     notebookData.id = document.documentID
                     self.notebook.append(notebookData)
+                    self.checkForRepeats(array: self.notebook)
+
                 }
             }
         
@@ -85,13 +97,19 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func getSharedList() {
+        db.collection("notebook")
         db.collection("users").document(user!.uid).collection("sharedList").getDocuments { (QuerySnapshot, err) in
-            for document in QuerySnapshot!.documents {
-                print("Get Shared list running, Gives:")
-                print("printing id for list: ")
-                print(document.get("idForList")!)
-                self.getNotebooks(docId: document.get("idForList") as! String)
+            if (err != nil) {
+                print(err.debugDescription)
+            } else {
+                for document in QuerySnapshot!.documents {
+                    print("Get Shared list running, Gives:")
+                    print("printing id for list: ")
+                    print(document.get("idForList")!)
+                    self.getNotebooks(docId: document.get("idForList") as! String)
+                }
             }
+          
         }
     }
     func getNotebooks(docId: String) {
@@ -105,7 +123,9 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 notebookData.name = documentSnapshot!.get("name") as! String
                 notebookData.id = documentSnapshot!.documentID
                 self.notebook.append(notebookData)
+                
             }
+        
             self.tableView.reloadData()
 
         }
@@ -123,7 +143,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if array.count > 1 {
             for index in 0..<array.count-1 {
                 if array[index].name == array[array.count-1].name {
-                    showAlert(title: "Two Identical Items Added", message: "\(array[index].name) has been added twice.")
+                    //showAlert(title: "Two Identical Items Added", message: "\(array[index].name) has been added twice.")
                 }
             }
         }
@@ -173,7 +193,9 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 print("issue here")
             }else{
                 print("Document was saved")
+                
             }
+            
         }
         
     }
