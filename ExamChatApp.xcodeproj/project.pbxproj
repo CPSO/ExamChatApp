@@ -20,6 +20,7 @@
 		28888774228AED04007E9B9D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28888772228AED04007E9B9D /* LaunchScreen.storyboard */; };
 		2888877E228AF107007E9B9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2888877D228AF107007E9B9D /* GoogleService-Info.plist */; };
 		28888786228AFE4E007E9B9D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28888785228AFE4E007E9B9D /* LoginViewController.swift */; };
+		28DF821A22A6D1A00091E64E /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DF821922A6D1A00091E64E /* PopUpViewController.swift */; };
 		D357D729D5E8722A787C067D /* Pods_ExamChatApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0917359D11A866E01D557298 /* Pods_ExamChatApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 		28888775228AED04007E9B9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2888877D228AF107007E9B9D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		28888785228AFE4E007E9B9D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = Pods/LoginViewController.swift; sourceTree = SOURCE_ROOT; };
+		28DF821922A6D1A00091E64E /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
 		7D652DA2BD3A374451A5E2FC /* Pods-ExamChatApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExamChatApp.debug.xcconfig"; path = "Target Support Files/Pods-ExamChatApp/Pods-ExamChatApp.debug.xcconfig"; sourceTree = "<group>"; };
 		CFFD156BB320EE3DD90648A7 /* Pods-ExamChatApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExamChatApp.release.xcconfig"; path = "Target Support Files/Pods-ExamChatApp/Pods-ExamChatApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,6 +87,7 @@
 				28888772228AED04007E9B9D /* LaunchScreen.storyboard */,
 				28888785228AFE4E007E9B9D /* LoginViewController.swift */,
 				2888876D228AED02007E9B9D /* Main.storyboard */,
+				28DF821922A6D1A00091E64E /* PopUpViewController.swift */,
 				2823134E22A1442500875CE7 /* ThirdViewController.swift */,
 				2888876B228AED02007E9B9D /* ViewController.swift */,
 				2832C7BB22A1782B00E3E077 /* UserModel.swift */,
@@ -282,6 +285,7 @@
 			files = (
 				2832C7C022A197D900E3E077 /* SecondViewController.swift in Sources */,
 				2832C7BC22A1782B00E3E077 /* UserModel.swift in Sources */,
+				28DF821A22A6D1A00091E64E /* PopUpViewController.swift in Sources */,
 				28888786228AFE4E007E9B9D /* LoginViewController.swift in Sources */,
 				2888876C228AED02007E9B9D /* ViewController.swift in Sources */,
 				2832C7C222A2094000E3E077 /* NotebookItemModel.swift in Sources */,

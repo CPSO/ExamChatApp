@@ -13,16 +13,16 @@ import FirebaseUI
 
 
 var groceryListId = " "
-
-class SecondViewController: UIViewController {
+class SecondViewController: UIViewController, UIPopoverPresentationControllerDelegate {
     let db = Firestore.firestore()
     let user = Auth.auth().currentUser
     var groceryListItem = [NotebookItem]()
     var groceryList: Notebook?
     var quantityValue: Int!
-    
+    @IBOutlet weak var shareBtn: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addItemBtn: UIBarButtonItem!
+
     
 
     override func viewDidLoad() {
@@ -32,6 +32,8 @@ class SecondViewController: UIViewController {
         print("new view")
         checkForUpdates()
         getData()
+        self.tableView.tableFooterView = UIView(frame: .zero)
+
         
         // Do any additional setup after loading the view.
     }
@@ -104,8 +106,13 @@ class SecondViewController: UIViewController {
                 print("Document was saved")
             }
         }
+        
     }
     
+    
+    @IBAction func shareBtnPressed(_ sender: Any) {
+        print("pressing share btn")
+    }
     
     
 }
@@ -113,6 +120,25 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groceryListItem.count
 
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        if segue.identifier == "popupsegue"{
+            let popVC = segue.destination as! PopuoViewController
+            popVC.parentVC = self // so we can call the addLink metod
+            popVC.preferredContentSize = CGSize(width: 300, height: 300)
+            popVC.presentationController?.delegate = self
+            popVC.groceryListId = groceryListId
+            
+        
+        }
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+    override func viewWillLayoutSubviews() {
+        preferredContentSize = CGSize(width: 300, height: tableView.contentSize.height)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -101,7 +101,7 @@
             </objects>
             <point key="canvasLocation" x="593" y="170"/>
         </scene>
-        <!--Second View Controller-->
+        <!--Items-->
         <scene sceneID="xg5-J8-8XA">
             <objects>
                 <viewController id="STr-jw-HTP" customClass="SecondViewController" customModule="ExamChatApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -128,7 +128,15 @@
                         <color key="backgroundColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
                         <viewLayoutGuide key="safeArea" id="0ow-JT-cVj"/>
                     </view>
-                    <navigationItem key="navigationItem" id="58e-35-WXs">
+                    <navigationItem key="navigationItem" title="Items" id="58e-35-WXs">
+                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="p7a-pW-UCz">
+                            <connections>
+                                <action selector="shareBtnPressed:" destination="STr-jw-HTP" id="nbQ-cm-ki4"/>
+                                <segue destination="WFs-F6-BkC" kind="popoverPresentation" identifier="popupsegue" popoverAnchorBarButtonItem="p7a-pW-UCz" id="SJi-rR-cuG">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="hEb-w9-44o">
                             <connections>
                                 <action selector="addItemBtnPressed:" destination="STr-jw-HTP" id="yTF-Nt-red"/>
@@ -137,6 +145,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addItemBtn" destination="hEb-w9-44o" id="wq2-vh-y8L"/>
+                        <outlet property="shareBtn" destination="p7a-pW-UCz" id="EkL-h4-oeo"/>
                         <outlet property="tableView" destination="YVZ-Px-dfE" id="bkr-bI-HT8"/>
                     </connections>
                 </viewController>
@@ -191,7 +200,7 @@
             </objects>
             <point key="canvasLocation" x="7527.1999999999998" y="168.6656671664168"/>
         </scene>
-        <!--First View Controller-->
+        <!--Grocory lists-->
         <scene sceneID="v7A-sY-bH4">
             <objects>
                 <viewController id="y5m-pc-2SS" customClass="FirstViewController" customModule="ExamChatApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -218,7 +227,7 @@
                         <color key="backgroundColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
                         <viewLayoutGuide key="safeArea" id="IHX-aV-CTs"/>
                     </view>
-                    <navigationItem key="navigationItem" id="wNs-TD-HoM">
+                    <navigationItem key="navigationItem" title="Grocory lists" largeTitleDisplayMode="always" id="wNs-TD-HoM">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Mz5-bB-vdq">
                             <connections>
                                 <action selector="btnAddBookPressed:" destination="y5m-pc-2SS" id="5vH-TJ-Ink"/>
@@ -228,11 +237,74 @@
                     <connections>
                         <outlet property="btnAddBook" destination="Mz5-bB-vdq" id="qhk-IX-sSo"/>
                         <outlet property="tableView" destination="G1k-89-JFe" id="xA8-ul-yrd"/>
+                        <segue destination="STr-jw-HTP" kind="show" identifier="testSeg" id="1dk-Ty-bOI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kd3-5H-yhA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4532" y="-167.76611694152925"/>
+        </scene>
+        <!--Popuo View Controller-->
+        <scene sceneID="AKB-nH-IzH">
+            <objects>
+                <viewController modalPresentationStyle="overCurrentContext" id="WFs-F6-BkC" customClass="PopuoViewController" customModule="ExamChatApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7QR-NU-uzY">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Text in a POP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="74i-Co-rf1">
+                                <rect key="frame" x="136" y="323" width="102" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share list with other users" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IgU-lX-lBW">
+                                <rect key="frame" x="50.5" y="20" width="199" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="13G-yR-zeb">
+                                <rect key="frame" x="50" y="49" width="200" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="PBt-3E-mbE"/>
+                                    <constraint firstAttribute="width" constant="200" id="Un8-GK-eAQ"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5l6-5l-xCh">
+                                <rect key="frame" x="130" y="135" width="40" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Share"/>
+                                <connections>
+                                    <action selector="btnSharePressed:" destination="WFs-F6-BkC" eventType="touchUpInside" id="JVr-uK-D1v"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="IgU-lX-lBW" firstAttribute="top" secondItem="7QR-NU-uzY" secondAttribute="top" constant="20" symbolic="YES" id="7KG-si-wTm"/>
+                            <constraint firstItem="13G-yR-zeb" firstAttribute="top" secondItem="IgU-lX-lBW" secondAttribute="bottom" constant="8" symbolic="YES" id="FHi-bF-o0T"/>
+                            <constraint firstItem="IgU-lX-lBW" firstAttribute="leading" secondItem="e66-VU-fb0" secondAttribute="leading" constant="50.5" id="JrS-hB-XRW"/>
+                            <constraint firstItem="13G-yR-zeb" firstAttribute="centerX" secondItem="7QR-NU-uzY" secondAttribute="centerX" id="Vu5-ve-fFq"/>
+                            <constraint firstItem="e66-VU-fb0" firstAttribute="trailing" secondItem="IgU-lX-lBW" secondAttribute="trailing" constant="50.5" id="hyH-4K-hPE"/>
+                            <constraint firstItem="IgU-lX-lBW" firstAttribute="centerX" secondItem="7QR-NU-uzY" secondAttribute="centerX" id="xa8-gH-XGf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="e66-VU-fb0"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="300" height="300"/>
+                    <size key="freeformSize" width="300" height="300"/>
+                    <connections>
+                        <outlet property="btnSubmit" destination="5l6-5l-xCh" id="0Ww-zU-dt5"/>
+                        <outlet property="textEmail" destination="13G-yR-zeb" id="7n8-g0-gRl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eRy-4H-YFA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5388.8000000000002" y="554.1229385307347"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="77x-BO-NbK">
@@ -317,4 +389,7 @@
         <image name="list" width="30" height="30"/>
         <image name="user_male" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="1dk-Ty-bOI"/>
+    </inferredMetricsTieBreakers>
 </document>

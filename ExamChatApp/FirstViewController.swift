@@ -28,15 +28,20 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        self.tableView.tableFooterView = UIView(frame: .zero)
         getData()
+        getSharedList()
+        checkForRepeats(array: notebook)
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("calling viewWillApper")
-        getData()
         checkForUpdates()
+        getSharedList()
+        checkForRepeats(array: notebook)
+
     }
     
     func checkForUpdates() {
@@ -49,6 +54,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             print("setting new data")
         }
     }
+  
     
     
     
@@ -59,18 +65,68 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             guard error == nil else {
                 print("ERROR: reading documents \(error!.localizedDescription)")
                 return
+            }; if querySnapshot!.isEmpty {
+                print("User has no own list")
+            } else {
+                print("getData found docss")
+                self.notebook = []
+                for document in querySnapshot!.documents {
+                    let notebookData = Notebook(dictionary: document.data())
+                    notebookData.name = document.get("name") as! String
+                    notebookData.id = document.documentID
+                    self.notebook.append(notebookData)
+                }
             }
-            self.notebook = []
-            for document in querySnapshot!.documents {
-                let notebookData = Notebook(dictionary: document.data())
-                notebookData.name = document.get("name") as! String
-                notebookData.id = document.documentID
-                self.notebook.append(notebookData)
-            }
+        
             self.tableView.reloadData()
         }
        
 
+    }
+    
+    func getSharedList() {
+        db.collection("users").document(user!.uid).collection("sharedList").getDocuments { (QuerySnapshot, err) in
+            for document in QuerySnapshot!.documents {
+                print("Get Shared list running, Gives:")
+                print("printing id for list: ")
+                print(document.get("idForList")!)
+                self.getNotebooks(docId: document.get("idForList") as! String)
+            }
+        }
+    }
+    func getNotebooks(docId: String) {
+        db.collection("notebook").document(docId).getDocument { (documentSnapshot, error) in
+            if documentSnapshot!.exists{
+                print("printing information")
+                print(documentSnapshot?.documentID)
+                print(documentSnapshot?.get("name"))
+                
+                let notebookData = Notebook(dictionary: documentSnapshot!.data()!)
+                notebookData.name = documentSnapshot!.get("name") as! String
+                notebookData.id = documentSnapshot!.documentID
+                self.notebook.append(notebookData)
+            }
+            self.tableView.reloadData()
+
+        }
+        
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(defaultAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func checkForRepeats(array: [Notebook]) {
+        if array.count > 1 {
+            for index in 0..<array.count-1 {
+                if array[index].name == array[array.count-1].name {
+                    showAlert(title: "Two Identical Items Added", message: "\(array[index].name) has been added twice.")
+                }
+            }
+        }
     }
     
     
