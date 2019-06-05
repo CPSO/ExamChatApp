@@ -18,6 +18,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var notebook = [Notebook]()
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var btnAddBook: UIBarButtonItem!
+    var isDeleted = false
     
     
     
@@ -29,31 +30,44 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.dataSource = self
         tableView.delegate = self
         self.tableView.tableFooterView = UIView(frame: .zero)
+        print("calling viewDidLoad")
         // Do any additional setup after loading the view.
     }
-    
-    
+    override func viewDidAppear(_ animated: Bool) {
+        print("viewDidApper")
+    }
     
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("calling viewWillApper")
-        getData()
+        //getData()
         checkForUpdates()
+        getSharedList()
         checkForRepeats(array: notebook)
 
     }
     
+    
+    
     func checkForUpdates() {
         print("CheckForUpdates Called")
-        db.collection("notebook").addSnapshotListener { (querySnapshot, error) in
+        db.collection("notebook").whereField("owner", isEqualTo: user?.email!).addSnapshotListener { (querySnapshot, error) in
             guard error == nil else {
                 print("Error adding snapshot listener \(error!.localizedDescription)")
                 return
             }
-            self.getData()
+            self.notebook = []
+            for document in querySnapshot!.documents {
+                let notebookData = Notebook(dictionary: document.data())
+                notebookData.name = document.get("name") as! String
+                notebookData.id = document.documentID
+                self.notebook.append(notebookData)
+                self.checkForRepeats(array: self.notebook)
+            }
             print("setting new data")
+            self.tableView.reloadData()
         }
 //        db.collection("users").document(user!.uid).collection("sharedList").addSnapshotListener { (querySnapshot, error) in
 //            guard error == nil else {
@@ -68,41 +82,40 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     
     
-    func getData(){
-        //let notebookRef = db.collection("notebook")
-        //let query = notebookRef.whereField("owner", isEqualTo: "<#T##Any#>")
-        db.collection("notebook").whereField("owner", isEqualTo: user?.email!).getDocuments { (querySnapshot, error) in
-            guard error == nil else {
-                print("ERROR: reading documents \(error!.localizedDescription)")
-                return
-            }; if querySnapshot!.isEmpty {
-                print("User has no own list")
-            } else {
-                print("getData found docss")
-                self.notebook = []
-                for document in querySnapshot!.documents {
-                    let notebookData = Notebook(dictionary: document.data())
-                    notebookData.name = document.get("name") as! String
-                    notebookData.id = document.documentID
-                    self.notebook.append(notebookData)
-                    self.checkForRepeats(array: self.notebook)
-
-                }
-            }
-        
-            self.tableView.reloadData()
-        }
-       
-
-    }
+//    func getData(){
+//        //let notebookRef = db.collection("notebook")
+//        //let query = notebookRef.whereField("owner", isEqualTo: "<#T##Any#>")
+//        db.collection("notebook").whereField("owner", isEqualTo: user?.email!).getDocuments { (querySnapshot, error) in
+//            guard error == nil else {
+//                print("ERROR: reading documents \(error!.localizedDescription)")
+//                return
+//            }; if querySnapshot!.isEmpty {
+//                print("User has no own list")
+//            } else {
+//                print("getData found docss")
+//                self.notebook = []
+//                for document in querySnapshot!.documents {
+//                    let notebookData = Notebook(dictionary: document.data())
+//                    notebookData.name = document.get("name") as! String
+//                    notebookData.id = document.documentID
+//                    self.notebook.append(notebookData)
+//                    self.checkForRepeats(array: self.notebook)
+//
+//                }
+//            }
+//
+//            self.tableView.reloadData()
+//        }
+//
+//
+//    }
     
     func getSharedList() {
-        db.collection("notebook")
-        db.collection("users").document(user!.uid).collection("sharedList").getDocuments { (QuerySnapshot, err) in
-            if (err != nil) {
-                print(err.debugDescription)
+        db.collection("users").document(user!.uid).collection("sharedList").addSnapshotListener { (querySnapshot, error) in
+            if (error != nil) {
+                print(error.debugDescription)
             } else {
-                for document in QuerySnapshot!.documents {
+                for document in querySnapshot!.documents {
                     print("Get Shared list running, Gives:")
                     print("printing id for list: ")
                     print(document.get("idForList")!)
@@ -118,12 +131,10 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 print("printing information")
                 print(documentSnapshot?.documentID)
                 print(documentSnapshot?.get("name"))
-                
                 let notebookData = Notebook(dictionary: documentSnapshot!.data()!)
                 notebookData.name = documentSnapshot!.get("name") as! String
                 notebookData.id = documentSnapshot!.documentID
                 self.notebook.append(notebookData)
-                
             }
         
             self.tableView.reloadData()
@@ -131,6 +142,23 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         
     }
+    
+    func deleteData(index: Int) {
+        var isDeleted = false
+        
+        let ref = db.collection("notebook").document(notebook[index].id)
+        ref.getDocument { (docSnap, error) in
+            if (self.notebook[index].owner != self.user?.email) {
+                print("cant delete other users notebook")
+                self.showAlert(title: "Delete Error", message: "Cannot delete other users notebook")
+            } else {
+                 ref.delete()
+                isDeleted = true
+            }
+        }
+       
+    }
+
     
     func showAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -157,12 +185,33 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath)
         cell.textLabel?.text = notebook[indexPath.row].name
+        if (notebook[indexPath.row].owner != user?.email){
+            cell.contentView.backgroundColor = UIColor.yellow
+        } else {
+            cell.contentView.backgroundColor = UIColor.green
+
+        }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            deleteData(index: indexPath.row)
+            if (isDeleted){
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                notebook.remove(at: indexPath.row)
+                
+            } else {
+                print("not deleteing")
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("selected: " + notebook[indexPath.row].id)
         groceryListId = notebook[indexPath.row].id
+        print(indexPath.row
+        )
         self.tabBarController?.selectedIndex = 1
         
     }
@@ -193,9 +242,8 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 print("issue here")
             }else{
                 print("Document was saved")
-                
             }
-            
+            self.tableView.reloadData()
         }
         
     }
