@@ -39,22 +39,27 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("calling viewWillApper")
-        getData()
         checkForUpdates()
-        checkForRepeats(array: notebook)
+        getSharedList()
 
     }
     
     func checkForUpdates() {
         print("CheckForUpdates Called")
-        db.collection("notebook").addSnapshotListener { (querySnapshot, error) in
+        db.collection("notebook").whereField("owner", isEqualTo: user?.email!).addSnapshotListener { (querySnapshot, error) in
             guard error == nil else {
                 print("Error adding snapshot listener \(error!.localizedDescription)")
                 return
             }
-            self.getData()
+            self.notebook = []
+            for document in querySnapshot!.documents {
+                let notebookData = Notebook(dictionary: document.data())
+                notebookData.name = document.get("name") as! String
+                notebookData.id = document.documentID
+                self.notebook.append(notebookData)
             print("setting new data")
         }
+            self.tableView.reloadData()
 //        db.collection("users").document(user!.uid).collection("sharedList").addSnapshotListener { (querySnapshot, error) in
 //            guard error == nil else {
 //                print("Error adding snapshot listener \(error!.localizedDescription)")
@@ -64,45 +69,46 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //            print("setting new data")
 //        }
     }
+    }
   
     
     
-    
-    func getData(){
-        //let notebookRef = db.collection("notebook")
-        //let query = notebookRef.whereField("owner", isEqualTo: "<#T##Any#>")
-        db.collection("notebook").whereField("owner", isEqualTo: user?.email!).getDocuments { (querySnapshot, error) in
-            guard error == nil else {
-                print("ERROR: reading documents \(error!.localizedDescription)")
-                return
-            }; if querySnapshot!.isEmpty {
-                print("User has no own list")
-            } else {
-                print("getData found docss")
-                self.notebook = []
-                for document in querySnapshot!.documents {
-                    let notebookData = Notebook(dictionary: document.data())
-                    notebookData.name = document.get("name") as! String
-                    notebookData.id = document.documentID
-                    self.notebook.append(notebookData)
-                    self.checkForRepeats(array: self.notebook)
-
-                }
-            }
-        
-            self.tableView.reloadData()
-        }
-       
-
-    }
+//
+//    func getData(){
+//        //let notebookRef = db.collection("notebook")
+//        //let query = notebookRef.whereField("owner", isEqualTo: "<#T##Any#>")
+//        db.collection("notebook").whereField("owner", isEqualTo: user?.email!).getDocuments { (querySnapshot, error) in
+//            guard error == nil else {
+//                print("ERROR: reading documents \(error!.localizedDescription)")
+//                return
+//            }; if querySnapshot!.isEmpty {
+//                print("User has no own list")
+//            } else {
+//                print("getData found docss")
+//                self.notebook = []
+//                for document in querySnapshot!.documents {
+//                    let notebookData = Notebook(dictionary: document.data())
+//                    notebookData.name = document.get("name") as! String
+//                    notebookData.id = document.documentID
+//                    self.notebook.append(notebookData)
+//                    self.checkForRepeats(array: self.notebook)
+//
+//                }
+//            }
+//
+//            self.tableView.reloadData()
+//        }
+//
+//
+//    }
     
     func getSharedList() {
         db.collection("notebook")
-        db.collection("users").document(user!.uid).collection("sharedList").getDocuments { (QuerySnapshot, err) in
-            if (err != nil) {
-                print(err.debugDescription)
+        db.collection("users").document(user!.uid).collection("sharedList").addSnapshotListener { (querySnapshot, error) in
+            if (error != nil) {
+                print(error.debugDescription)
             } else {
-                for document in QuerySnapshot!.documents {
+                for document in querySnapshot!.documents {
                     print("Get Shared list running, Gives:")
                     print("printing id for list: ")
                     print(document.get("idForList")!)
@@ -193,6 +199,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 print("issue here")
             }else{
                 print("Document was saved")
+                self.getSharedList()
                 
             }
             
