@@ -153,6 +153,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 self.showAlert(title: "Delete Error", message: "Cannot delete other users notebook")
             } else {
                  ref.delete()
+                self.getSharedList()
                 isDeleted = true
             }
         }
@@ -200,6 +201,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             if (isDeleted){
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 notebook.remove(at: indexPath.row)
+                self.getSharedList()
                 
             } else {
                 print("not deleteing")
@@ -242,6 +244,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 print("issue here")
             }else{
                 print("Document was saved")
+                self.getSharedList()
             }
             self.tableView.reloadData()
         }
