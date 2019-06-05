@@ -31,6 +31,8 @@ class PopuoViewController: UIViewController {
     @IBAction func btnSharePressed(_ sender: Any) {
         print("Share Pressed")
         checkUserEmail()
+        self.removeFromParent()
+        
         
     }
     
@@ -60,21 +62,44 @@ class PopuoViewController: UIViewController {
     func shareWithUser(email: String, userid: String) {
         let batch = db.batch()
         
-        let sharedUserRef = db.collection("users").document(userid).collection("sharedList").document()
-        batch.setData(["idForList": groceryListId,
-                       "sharedFromUser": user?.email], forDocument: sharedUserRef)
-        
-        let sharedListRef = db.collection("notebook").document(groceryListId).collection("sharedWith").document()
-        batch.setData(["idForUser": userid], forDocument: sharedListRef)
-        
-        batch.commit() { err in
-            if let err = err {
-                print("Error with Batch " + err.localizedDescription)
+        let sharedUserRef = db.collection("users").document(userid).collection("sharedList").whereField("idForList", isEqualTo: groceryListId)
+        sharedUserRef.getDocuments { (snap, error) in
+            if snap!.isEmpty{
+                self.db.collection("users").document(userid).collection("sharedList").addDocument(data: ["idForList" : self.groceryListId, "sharedFromUser": self.user?.email])
+                
+                
+                let sharedListRef = self.db.collection("notebook").document(self.groceryListId).collection("sharedWith").document()
+                batch.setData(["idForUser": userid], forDocument: sharedListRef)
+                
+                batch.commit() { err in
+                    if let err = err {
+                        print("Error with Batch " + err.localizedDescription)
+                    } else {
+                        print("Batch was good")
+                        self.parentVC?.dismiss(animated: true, completion: nil)
+
+                    }
+                    
+                }
+                
             } else {
-                print("Batch was good")
+                print("user already on list!")
             }
-            
         }
+        
+        //batch.setData(["idForList": groceryListId,"sharedFromUser": user?.email], forDocument: sharedUserRef)
+        
+//        let sharedListRef = db.collection("notebook").document(groceryListId).collection("sharedWith").document()
+//        batch.setData(["idForUser": userid], forDocument: sharedListRef)
+//
+//        batch.commit() { err in
+//            if let err = err {
+//                print("Error with Batch " + err.localizedDescription)
+//            } else {
+//                print("Batch was good")
+//            }
+//
+//        }
         
         
         
