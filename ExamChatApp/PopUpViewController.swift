@@ -25,7 +25,6 @@ class PopuoViewController: UIViewController {
         super.viewDidLoad()
         print(groceryListId)
 
-        // Do any additional setup after loading the view.
     }
     
     @IBAction func btnSharePressed(_ sender: Any) {
@@ -67,7 +66,6 @@ class PopuoViewController: UIViewController {
             if snap!.isEmpty{
                 self.db.collection("users").document(userid).collection("sharedList").addDocument(data: ["idForList" : self.groceryListId, "sharedFromUser": self.user?.email])
                 
-                
                 let sharedListRef = self.db.collection("notebook").document(self.groceryListId).collection("sharedWith").document()
                 batch.setData(["idForUser": userid], forDocument: sharedListRef)
                 
@@ -86,23 +84,6 @@ class PopuoViewController: UIViewController {
                 print("user already on list!")
             }
         }
-        
-        //batch.setData(["idForList": groceryListId,"sharedFromUser": user?.email], forDocument: sharedUserRef)
-        
-//        let sharedListRef = db.collection("notebook").document(groceryListId).collection("sharedWith").document()
-//        batch.setData(["idForUser": userid], forDocument: sharedListRef)
-//
-//        batch.commit() { err in
-//            if let err = err {
-//                print("Error with Batch " + err.localizedDescription)
-//            } else {
-//                print("Batch was good")
-//            }
-//
-//        }
-        
-        
-        
     }
     
     }

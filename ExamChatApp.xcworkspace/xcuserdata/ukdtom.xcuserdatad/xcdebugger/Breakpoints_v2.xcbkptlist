@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/LoginViewController.swift"
-            timestampString = "581371496.843393"
+            timestampString = "582497108.91979"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "29"
@@ -19,33 +19,33 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "ExamChatApp.LoginViewController.viewDidLoad() -&gt; ()"
                   moduleName = "ExamChatApp"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/ukdtom/Code/ExamChatApp/Pods/LoginViewController.swift"
-                  timestampString = "580991650.409336"
+                  timestampString = "582474075.719276"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "26"
-                  endingLineNumber = "26"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
                   offsetFromSymbolStart = "91">
                </Location>
                <Location
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 (__C.FIRAuth, Swift.Optional&lt;__C.FIRUser&gt;) -&gt; () in ExamChatApp.LoginViewController.viewDidLoad() -&gt; ()"
                   moduleName = "ExamChatApp"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/ukdtom/Code/ExamChatApp/Pods/LoginViewController.swift"
-                  timestampString = "580991650.41536"
+                  timestampString = "582474075.722603"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "27"
-                  endingLineNumber = "27"
+                  startingLineNumber = "31"
+                  endingLineNumber = "31"
                   offsetFromSymbolStart = "234">
                </Location>
             </Locations>

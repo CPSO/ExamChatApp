@@ -64,12 +64,12 @@ class LoginViewController: UIViewController {
                 
                 self.present(alert, animated: true, completion: nil)
             }
-            if let user = user {
+            if user != nil {
                 self.performSegue(withIdentifier: "loginSegue", sender: nil)
 
             }
     }
-    }
+}
     
     
     @IBAction func btnCreateUserPressed(_ sender: Any) {
@@ -94,6 +94,7 @@ class LoginViewController: UIViewController {
         guard let name = textEmail.text else {return}
         guard let password = textPassword.text else {return}
         
+    
         let user = UserModal(id: userAuth.uid, username: name, password: password)
         let userRef = self.db.collection("users")
         

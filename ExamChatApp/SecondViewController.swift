@@ -39,12 +39,12 @@ class SecondViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     override func viewDidAppear(_ animated: Bool) {
         print(groceryListId)
-        checkForUpdates()
+        getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         getData()
-        checkForUpdates()
+        
     }
     
     
@@ -60,7 +60,7 @@ class SecondViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     
     func getData(){
-        db.collection("notebook").document(groceryListId).collection("items").getDocuments { (querySnapshot, error) in
+        db.collection("notebook").document(groceryListId).collection("items").addSnapshotListener { (querySnapshot, error) in
             guard error == nil else {
                 print("ERROR: reading documents \(error!.localizedDescription)")
                 return
@@ -124,11 +124,11 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if segue.identifier == "popupsegue"{
-            let popVC = segue.destination as! PopuoViewController
-            popVC.parentVC = self // so we can call the addLink metod
+            let popVC = segue.destination as! PopuoViewController // identifies the target controller
+            popVC.parentVC = self // knows where it comes from
             popVC.preferredContentSize = CGSize(width: 300, height: 300)
             popVC.presentationController?.delegate = self
-            popVC.groceryListId = groceryListId
+            popVC.groceryListId = groceryListId //sends the id for the list over
             
         
         }

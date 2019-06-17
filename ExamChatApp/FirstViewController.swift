@@ -116,7 +116,6 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
        
     }
-
     
     func showAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -180,9 +179,9 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let ac = UIAlertController(title: "Enter name for new list", message: nil, preferredStyle: .alert)
         ac.addTextField()
         
-        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
-            let answer = ac.textFields![0]
-            self.addBook(bookname: answer.text!)
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak ac] _ in
+            let answer = ac?.textFields![0]
+            self.addBook(bookname: answer!.text!)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         
