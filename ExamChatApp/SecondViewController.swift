@@ -79,7 +79,7 @@ class SecondViewController: UIViewController, UIPopoverPresentationControllerDel
     @IBAction func addItemBtnPressed(_ sender: Any) {
         print("add btn pressed")
         
-        let ac = UIAlertController(title: "Enter answer", message: nil, preferredStyle: .alert)
+        let ac = UIAlertController(title: "Enter item to list", message: nil, preferredStyle: .alert)
         ac.addTextField()
         
         let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in

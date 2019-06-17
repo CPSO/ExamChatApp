@@ -20,10 +20,6 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var btnAddBook: UIBarButtonItem!
     var isDeleted = false
     
-    
-    
-
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,46 +65,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             print("setting new data")
             self.tableView.reloadData()
         }
-//        db.collection("users").document(user!.uid).collection("sharedList").addSnapshotListener { (querySnapshot, error) in
-//            guard error == nil else {
-//                print("Error adding snapshot listener \(error!.localizedDescription)")
-//                return
-//            }
-//            self.getSharedList()
-//            print("setting new data")
-//        }
     }
-  
-    
-    
-    
-//    func getData(){
-//        //let notebookRef = db.collection("notebook")
-//        //let query = notebookRef.whereField("owner", isEqualTo: "<#T##Any#>")
-//        db.collection("notebook").whereField("owner", isEqualTo: user?.email!).getDocuments { (querySnapshot, error) in
-//            guard error == nil else {
-//                print("ERROR: reading documents \(error!.localizedDescription)")
-//                return
-//            }; if querySnapshot!.isEmpty {
-//                print("User has no own list")
-//            } else {
-//                print("getData found docss")
-//                self.notebook = []
-//                for document in querySnapshot!.documents {
-//                    let notebookData = Notebook(dictionary: document.data())
-//                    notebookData.name = document.get("name") as! String
-//                    notebookData.id = document.documentID
-//                    self.notebook.append(notebookData)
-//                    self.checkForRepeats(array: self.notebook)
-//
-//                }
-//            }
-//
-//            self.tableView.reloadData()
-//        }
-//
-//
-//    }
     
     func getSharedList() {
         db.collection("users").document(user!.uid).collection("sharedList").addSnapshotListener { (querySnapshot, error) in
@@ -220,7 +177,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     
     @IBAction func btnAddBookPressed(_ sender: Any) {
-        let ac = UIAlertController(title: "Enter answer", message: nil, preferredStyle: .alert)
+        let ac = UIAlertController(title: "Enter name for new list", message: nil, preferredStyle: .alert)
         ac.addTextField()
         
         let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned ac] _ in
